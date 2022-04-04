@@ -8,7 +8,7 @@ class Scraper():
     s = HTMLSession()
     r = s.get(url)
 
-    qlist = []
+    articleList = []
     articles = r.html.find('.fc-item__container')
 
     for article in articles:
@@ -26,9 +26,9 @@ class Scraper():
           'thumbnail': imageThumbnailLink.attrs['src'],
           'description': article.find('.fc-item__standfirst', first=True).text.strip(),
         }
-        qlist.append(item)
+        articleList.append(item)
 
-    return qlist
+    return articleList
 
   def scrapeSingle(self, tag):
     url = 'https://www.theguardian.com/uk';
@@ -41,9 +41,6 @@ class Scraper():
     for article in articles:
       articleLink = article.find('a.js-headline-text', first=True)
       hrefLink = articleLink.xpath('//a', first=True)
-      thumbnailLink = article.find('.fc-item__image-container > picture > img', first=True)
-      description = article.find('.fc-item__standfirst', first=True)
-
       fullLinkString = hrefLink.attrs['href']
 
       if (tag in fullLinkString):
