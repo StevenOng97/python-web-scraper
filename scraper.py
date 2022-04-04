@@ -15,11 +15,12 @@ class Scraper():
       hrefLink = articleLink.xpath('//a', first=True)
       thumbnailLink = article.find('.fc-item__image-container > picture > img', first=True)
       description = article.find('.fc-item__standfirst', first=True)
-
-      if (thumbnailLink and description):
+      
+      title = article.find('.fc-item__title', first=True).text.strip()
+      if (thumbnailLink and description and ('Live' not in title)):
         imageThumbnailLink = thumbnailLink.xpath('//img', first=True)
         item = {
-          'title': article.find('.fc-item__title', first=True).text.strip(),
+          'title': title,
           'url': hrefLink.attrs['href'],
           'thumbnail': imageThumbnailLink.attrs['src'],
           'description': article.find('.fc-item__standfirst', first=True).text.strip(),
