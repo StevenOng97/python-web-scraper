@@ -1,4 +1,5 @@
 from requests_html import HTMLSession
+from fastapi import HTTPException
 
 class Scraper():
   def scrapeMultiple(self):
@@ -44,8 +45,8 @@ class Scraper():
       description = article.find('.fc-item__standfirst', first=True)
 
       fullLinkString = hrefLink.attrs['href']
+
       if (tag in fullLinkString):
-        print(fullLinkString)
         r = s.get(fullLinkString)
         break
     
@@ -61,6 +62,9 @@ class Scraper():
       for content in sections:
         contentSection.append(content.text)
     
+    if (not sections):
+      raise HTTPException(status_code=404, detail="Article not found")
+
     title = r.html.find('h1.dcr-125vfar', first=True).text.strip()
     subTitle = r.html.find('div.dcr-u4zu7g  > p', first=True).text.strip()
     imageQuote = r.html.find('span.dcr-19x4pdv', first=True).text.strip()
