@@ -62,7 +62,12 @@ class Scraper():
     if (not sections):
       raise HTTPException(status_code=404, detail="Article not found")
 
-    title = r.html.find('h1.dcr-125vfar', first=True).text.strip()
+    
+    # title = r.html.find('h1.dcr-125vfar', first=True)
+    title = r.html.find('div[data-gu-name=headline]', first=True).text.strip()
+    if (title):
+      print(title)
+
     subTitle = r.html.find('div.dcr-u4zu7g  > p', first=True).text.strip()
     imageQuote = r.html.find('span.dcr-19x4pdv', first=True).text.strip()
     image = r.html.find('img.dcr-1989ovb', first=True)
