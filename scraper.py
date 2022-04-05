@@ -31,11 +31,12 @@ class Scraper():
     return articleList
 
   def scrapeSingle(self, tag):
-    url = 'https://www.theguardian.com/uk';
+    url = 'https://www.theguardian.com/uk'
 
     s = HTMLSession()
     r = s.get(url)
 
+    externalLink = ''
     articles = r.html.find('.fc-item__container')
 
     for article in articles:
@@ -45,6 +46,7 @@ class Scraper():
 
       if (tag in fullLinkString):
         r = s.get(fullLinkString)
+        externalLink = fullLinkString
         break
     
     sections = r.html.find('.article-body-commercial-selector > p')
@@ -79,6 +81,7 @@ class Scraper():
       'contentSection': contentSection,
       'imageQuote': imageQuote,
       'img': imageLink.attrs['src'],
+      'externalLink': externalLink
     }
 
     return article
